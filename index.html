@@ -6,40 +6,59 @@
 <title>세무 자동화 도구 모음</title>
 <style>
   :root{
-    --bg:#f5f6f8; --card:#ffffff; --border:#e2e5ea; --text:#1f2430; --muted:#6b7280;
-    --accent:#2563eb; --accent-dark:#1d4ed8;
+    --bg:#f5f6f8; --card:#ffffff; --border:#e2e5ea; --border-strong:#c7cbd3;
+    --text:#1f2430; --muted:#6b7280; --accent:#2563eb; --accent-dark:#1d4ed8;
   }
   *{box-sizing:border-box;}
   body{
     margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Pretendard,Malgun Gothic,sans-serif;
-    background:var(--bg); color:var(--text); padding:24px; line-height:1.5;
+    background:var(--bg); color:var(--text); padding:48px 24px 64px; line-height:1.5;
   }
-  .wrap{max-width:720px; margin:0 auto;}
-  h1{font-size:22px; margin:0 0 4px;}
-  .sub{color:var(--muted); font-size:13px; margin-bottom:24px;}
-  ul{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:12px;}
-  li a{
-    display:block; background:var(--card); border:1px solid var(--border); border-radius:12px;
-    padding:16px 18px; text-decoration:none; color:var(--text);
-    box-shadow:0 1px 2px rgba(0,0,0,0.03); transition:border-color .15s, box-shadow .15s;
+  .wrap{max-width:880px; margin:0 auto;}
+  h1{font-size:24px; margin:0 0 6px; font-weight:700;}
+  .sub{color:var(--muted); font-size:13px; margin-bottom:32px;}
+
+  .grid{
+    display:flex; flex-direction:column; gap:12px;
   }
-  li a:hover{border-color:var(--accent); box-shadow:0 2px 6px rgba(37,99,235,0.12);}
-  li a .title{font-size:15px; font-weight:600; color:var(--accent-dark); margin-bottom:4px;}
-  li a .desc{font-size:12.5px; color:var(--muted);}
+  .card{
+    position:relative; display:flex; flex-direction:column; gap:8px;
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:18px 20px 16px; text-decoration:none; color:var(--text);
+    box-shadow:0 1px 2px rgba(0,0,0,0.03);
+    transition:border-color .15s, box-shadow .15s;
+  }
+  .card:hover{border-color:var(--accent); box-shadow:0 2px 8px rgba(37,99,235,0.12);}
+  .card .title{font-size:15px; font-weight:600; color:var(--accent-dark);}
+  .card .desc{font-size:12.5px; color:var(--muted); flex:1;}
+  .card .go{font-size:12px; font-weight:600; color:var(--accent);}
+
+  .card.add{
+    align-items:center; justify-content:center; text-align:center; gap:6px;
+    border:1.5px dashed var(--border-strong); color:var(--muted); box-shadow:none; cursor:default;
+  }
+  .card.add:hover{border-color:var(--border-strong); box-shadow:none;}
+  .card.add .plus{font-size:20px; line-height:1; color:var(--muted);}
+  .card.add .label{font-size:12px;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>세무 자동화 도구 모음</h1>
   <div class="sub">필요한 도구를 선택하세요.</div>
-  <ul>
-    <li>
-      <a href="일반전표자동생성/정기출금_일반전표자동변환기.html">
-        <div class="title">정기출금 → 일반전표 자동변환기</div>
-        <div class="desc">정기출금 내역 엑셀을 더존 회계 전표 형식으로 변환합니다.</div>
-      </a>
-    </li>
-  </ul>
+
+  <div class="grid">
+    <a class="card" href="일반전표자동생성/정기출금_일반전표자동변환기.html">
+      <div class="title">정기출금 → 일반전표 자동변환기</div>
+      <div class="desc">정기출금 내역 엑셀을 더존 회계 전표 형식으로 변환합니다.</div>
+      <span class="go">열기 →</span>
+    </a>
+
+    <div class="card add">
+      <div class="plus">+</div>
+      <div class="label">새 도구 추가 예정</div>
+    </div>
+  </div>
 </div>
 </body>
 </html>
