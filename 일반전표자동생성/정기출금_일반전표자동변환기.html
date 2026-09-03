@@ -63,6 +63,13 @@
   .msg.err{background:var(--danger-bg); color:var(--danger);}
   .muted{color:var(--muted); font-size:12px;}
   .divider{height:1px; background:var(--border); margin:14px 0;}
+  .dropzone{
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    border:1.5px dashed var(--border); border-radius:10px; padding:10px 12px;
+    transition:border-color .15s, background .15s;
+  }
+  .dropzone.dragover{ border-color:var(--accent); background:#eef2ff; }
+  .dropzone-hint{ font-size:11.5px; color:var(--muted); }
   .download-bar{display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;}
   .search-results{margin-top:8px;}
   code{background:#f1f5f9; padding:1px 5px; border-radius:4px; font-size:12px;}
@@ -79,9 +86,12 @@
     <div class="divider"></div>
 
     <div class="row">
-      <div class="field">
+      <div class="field" style="flex:1;">
         <label>거래처등록 엑셀 전체 재업로드 (기존 데이터 전체 교체)</label>
-        <input type="file" id="vendorFileInput" accept=".xlsx,.xls">
+        <div class="dropzone" id="vendorDropzone">
+          <input type="file" id="vendorFileInput" accept=".xlsx,.xls">
+          <span class="dropzone-hint">또는 파일을 여기로 끌어다 놓으세요</span>
+        </div>
       </div>
     </div>
     <div id="vendorUploadMsg"></div>
@@ -110,9 +120,12 @@
   <div class="card">
     <h2>② 정기출금 엑셀 업로드</h2>
     <div class="row">
-      <div class="field">
+      <div class="field" style="flex:1;">
         <label>이번 달 정기출금 엑셀 파일</label>
-        <input type="file" id="txFileInput" accept=".xlsx,.xls">
+        <div class="dropzone" id="txDropzone">
+          <input type="file" id="txFileInput" accept=".xlsx,.xls">
+          <span class="dropzone-hint">또는 파일을 여기로 끌어다 놓으세요</span>
+        </div>
       </div>
     </div>
     <div id="txUploadMsg"></div>
@@ -331,9 +344,30 @@ function updateVendorUI(){
   document.getElementById('vendorSourceInfo').textContent = vendorSource;
 }
 
+/* ============ 드래그앤드롭 공용 ============ */
+function setupDropzone(zoneEl, inputEl, handler){
+  ['dragenter','dragover'].forEach(evt=>{
+    zoneEl.addEventListener(evt, (e)=>{
+      e.preventDefault(); e.stopPropagation();
+      zoneEl.classList.add('dragover');
+    });
+  });
+  zoneEl.addEventListener('dragleave', (e)=>{
+    e.preventDefault(); e.stopPropagation();
+    zoneEl.classList.remove('dragover');
+  });
+  zoneEl.addEventListener('drop', (e)=>{
+    e.preventDefault(); e.stopPropagation();
+    zoneEl.classList.remove('dragover');
+    const file = e.dataTransfer.files && e.dataTransfer.files[0];
+    if(!file) return;
+    inputEl.files = e.dataTransfer.files;
+    handler(file);
+  });
+}
+
 /* ============ 거래처 관리 UI ============ */
-document.getElementById('vendorFileInput').addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
+async function handleVendorFile(file){
   if(!file) return;
   const msgEl = document.getElementById('vendorUploadMsg');
   msgEl.innerHTML = '<div class="msg">처리 중…</div>';
@@ -355,7 +389,9 @@ document.getElementById('vendorFileInput').addEventListener('change', async (e)=
     console.error(err);
     msgEl.innerHTML = '<div class="msg err">파일을 읽는 중 오류가 발생했습니다: ' + err.message + '</div>';
   }
-});
+}
+document.getElementById('vendorFileInput').addEventListener('change', (e)=> handleVendorFile(e.target.files[0]));
+setupDropzone(document.getElementById('vendorDropzone'), document.getElementById('vendorFileInput'), handleVendorFile);
 
 async function addVendor(){
   const code = document.getElementById('newCode').value.trim();
@@ -416,8 +452,7 @@ function fmtWon(n){
 }
 
 /* ============ 정기출금 파일 처리 ============ */
-document.getElementById('txFileInput').addEventListener('change', async (e)=>{
-  const file = e.target.files[0];
+async function handleTxFile(file){
   if(!file) return;
   const msgEl = document.getElementById('txUploadMsg');
   msgEl.innerHTML = '<div class="msg">처리 중…</div>';
@@ -432,7 +467,9 @@ document.getElementById('txFileInput').addEventListener('change', async (e)=>{
     console.error(err);
     msgEl.innerHTML = '<div class="msg err">파일을 읽는 중 오류가 발생했습니다: ' + err.message + '</div>';
   }
-});
+}
+document.getElementById('txFileInput').addEventListener('change', (e)=> handleTxFile(e.target.files[0]));
+setupDropzone(document.getElementById('txDropzone'), document.getElementById('txFileInput'), handleTxFile);
 
 function processTxRows(rows){
   manualCodes = {};
