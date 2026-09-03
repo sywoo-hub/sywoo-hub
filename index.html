@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>세무 자동화 도구 모음</title>
+<title>SY OS</title>
 <style>
   :root{
     --bg:#f5f6f8; --card:#ffffff; --border:#e2e5ea; --border-strong:#c7cbd3;
-    --text:#1f2430; --muted:#6b7280; --accent:#2563eb; --accent-dark:#1d4ed8;
+    --text:#1f2430; --muted:#6b7280; --accent:#1a1a1a; --accent-dark:#000000;
   }
   *{box-sizing:border-box;}
   body{
@@ -15,8 +15,29 @@
     background:var(--bg); color:var(--text); padding:48px 24px 64px; line-height:1.5;
   }
   .wrap{max-width:880px; margin:0 auto;}
-  h1{font-size:24px; margin:0 0 6px; font-weight:700;}
-  .sub{color:var(--muted); font-size:13px; margin-bottom:32px;}
+
+  .header{text-align:center; margin-bottom:32px;}
+  .eyebrow{
+    font-size:11px; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--accent); margin-bottom:10px;
+  }
+  .brand{display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:8px;}
+  .brand .mark{
+    width:32px; height:32px; flex-shrink:0; border-radius:9px; position:relative; overflow:hidden;
+    background:var(--accent-dark); box-shadow:0 2px 6px rgba(0,0,0,0.22);
+  }
+  .brand .mark::before{
+    content:''; position:absolute; inset:0; background:#fff;
+    clip-path:polygon(0 0, 100% 0, 0 100%);
+  }
+  .brand .mark .s{position:absolute; left:5px; top:3px; font-size:11px; font-weight:800; color:var(--accent-dark);}
+  .brand .mark .y{position:absolute; right:4px; bottom:2px; font-size:11px; font-weight:800; color:#fff;}
+  .brand h1{font-size:26px; margin:0; font-weight:800; letter-spacing:-.01em;}
+  .brand .ver{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:10.5px; color:var(--muted);
+    border:1px solid var(--border); border-radius:999px; padding:2px 8px; margin-left:2px;
+  }
+  .sub{color:var(--muted); font-size:13px;}
 
   .grid{
     display:flex; flex-direction:column; gap:12px;
@@ -28,7 +49,7 @@
     box-shadow:0 1px 2px rgba(0,0,0,0.03);
     transition:border-color .15s, box-shadow .15s;
   }
-  .card:hover{border-color:var(--accent); box-shadow:0 2px 8px rgba(37,99,235,0.12);}
+  .card:hover{border-color:var(--accent); box-shadow:0 2px 8px rgba(0,0,0,0.1);}
   .card .title{font-size:15px; font-weight:600; color:var(--accent-dark);}
   .card .desc{font-size:12.5px; color:var(--muted); flex:1;}
   .card .go{font-size:12px; font-weight:600; color:var(--accent);}
@@ -44,8 +65,15 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>세무 자동화 도구 모음</h1>
-  <div class="sub">필요한 도구를 선택하세요.</div>
+  <div class="header">
+    <div class="eyebrow">자동화 도구 모음</div>
+    <div class="brand">
+      <span class="mark"><span class="s">S</span><span class="y">Y</span></span>
+      <h1>OS</h1>
+      <span class="ver">v1.0</span>
+    </div>
+    <div class="sub">필요한 도구를 선택하세요.</div>
+  </div>
 
   <div class="grid">
     <a class="card" href="일반전표자동생성/정기출금_일반전표자동변환기.html">
