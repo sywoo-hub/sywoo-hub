@@ -317,11 +317,11 @@ let fileName = '';
 /* ============ 저장소 ============ */
 async function loadVendors(){
   try{
-    const res = await window.storage.get('vendors_v1', false);
-    if(res && res.value){
-      const raw = JSON.parse(res.value);
+    const stored = localStorage.getItem('vendors_v1');
+    if(stored){
+      const raw = JSON.parse(stored);
       vendors = rawToVendors(raw);
-      vendorSource = '저장된 데이터 (' + vendors.length + '건)';
+      vendorSource = '저장된 데이터 (' + vendors.length + '건, 이 브라우저에 저장됨)';
     } else {
       throw new Error('no data');
     }
@@ -336,7 +336,7 @@ async function loadVendors(){
 async function saveVendors(){
   const raw = vendors.map(v=>[v.c,v.n,v.b,v.r,v.u,v.isJumin?1:0]);
   try{
-    await window.storage.set('vendors_v1', JSON.stringify(raw), false);
+    localStorage.setItem('vendors_v1', JSON.stringify(raw));
   }catch(e){
     console.error('저장 실패', e);
   }
