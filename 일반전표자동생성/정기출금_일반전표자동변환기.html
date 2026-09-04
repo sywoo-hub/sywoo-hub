@@ -617,7 +617,7 @@ function buildFinalEntries(){
       if(!refDate && r.txDate) refDate = r.txDate;
       let code = r.code;
       if((!code || code==='') && manualCodes[r.mgmt]) code = manualCodes[r.mgmt];
-      const memo = '정기출금 CMS결제(' + (r.company||r.name||'') + ')' + ((!code)?' [확인필요]':'');
+      const memo = '외상매출금 CMS입금';
       const d = refDate || r.txDate;
       let y,m,day;
       if(d){ const dt = nextBusinessDay(d); y=dt.getFullYear(); m=dt.getMonth()+1; day=dt.getDate(); }
@@ -635,8 +635,8 @@ function buildFinalEntries(){
   else { y='';m='';day=''; }
 
   const summaryLines = [
-    { y,m,day, gubun:3, code: FIXED.acc_fee, acc:'지급수수료', vendor: FIXED.bankVendorCode, debit: totalFeeAll, credit:null, memo:'정기출금 CMS 수수료(성공+미출금 전체)' },
-    { y,m,day, gubun:3, code: FIXED.acc_deposit, acc:'보통예금', vendor: FIXED.bankVendorCode, debit: netDeposit, credit:null, memo:'정기출금 CMS 입금(수수료차감)' },
+    { y,m,day, gubun:3, code: FIXED.acc_fee, acc:'지급수수료', vendor: FIXED.bankVendorCode, debit: totalFeeAll, credit:null, memo:'외상매출금 CMS입금' },
+    { y,m,day, gubun:3, code: FIXED.acc_deposit, acc:'보통예금', vendor: FIXED.bankVendorCode, debit: netDeposit, credit:null, memo:'외상매출금 CMS입금' },
   ];
   finalEntries = summaryLines.concat(entries);
   renderPreview();
