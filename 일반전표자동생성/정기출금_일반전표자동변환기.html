@@ -41,10 +41,12 @@
     font-size:13px; font-weight:600; cursor:pointer; transition:background .15s;
   }
   button:hover{background:var(--accent-dark);}
+  button:active{transform:scale(0.94);}
   button.secondary{background:#fff; color:var(--accent); border:1px solid var(--accent);}
   button.secondary:hover{background:#eef2ff;}
-  button.ghost{background:#fff; color:var(--muted); border:1px solid var(--border); padding:6px 10px; font-size:12px;}
-  button:disabled{background:#d1d5db; cursor:not-allowed;}
+  button.ghost{background:#fff; color:var(--muted); border:1px solid var(--border); padding:6px 10px; font-size:12px; transition:background .15s, color .15s, border-color .15s, transform .1s;}
+  button.ghost.applied{background:var(--ok-bg); color:var(--ok); border-color:var(--ok); transform:none;}
+  button:disabled{background:#d1d5db; cursor:not-allowed; transform:none;}
   .stat-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:4px;}
   .stat{background:#f9fafb; border:1px solid var(--border); border-radius:10px; padding:12px 14px;}
   .stat .label{font-size:11px; color:var(--muted); margin-bottom:4px;}
@@ -574,7 +576,7 @@ function renderFailTable(){
       '<td><div class="row" style="flex-wrap:nowrap;">'+
         '<input type="text" id="manualCodeInput_'+r.mgmt+'" placeholder="코드 입력" '+
           'onkeydown="if(event.key===\'Enter\') applyManualCode(\''+r.mgmt+'\')">'+
-        '<button class="ghost" onclick="applyManualCode(\''+r.mgmt+'\')">입력</button>'+
+        '<button class="ghost" id="manualCodeBtn_'+r.mgmt+'" onclick="applyManualCode(\''+r.mgmt+'\')">입력</button>'+
       '</div></td>'+
       '</tr>';
   }
@@ -584,6 +586,18 @@ function renderFailTable(){
 function applyManualCode(mgmt){
   const input = document.getElementById('manualCodeInput_'+mgmt);
   setManualCode(mgmt, input.value);
+
+  const btn = document.getElementById('manualCodeBtn_'+mgmt);
+  if(btn){
+    clearTimeout(btn._resetTimer);
+    const original = btn.textContent;
+    btn.textContent = '✓ 완료';
+    btn.classList.add('applied');
+    btn._resetTimer = setTimeout(()=>{
+      btn.textContent = original;
+      btn.classList.remove('applied');
+    }, 1000);
+  }
 }
 
 function setManualCode(mgmt, value){
