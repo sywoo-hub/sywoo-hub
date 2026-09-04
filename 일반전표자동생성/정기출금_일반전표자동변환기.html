@@ -571,10 +571,19 @@ function renderFailTable(){
     html += '<tr class="fail-row" data-mgmt="'+r.mgmt+'">'+
       '<td>'+r.mgmt+'</td><td>'+(r.name||'')+'</td><td>'+(r.company||'')+'</td><td>'+(r.bizraw||'-')+'</td>'+
       '<td>'+cands+'</td>'+
-      '<td><input type="text" placeholder="코드 입력" onchange="setManualCode(\''+r.mgmt+'\', this.value)"></td>'+
+      '<td><div class="row" style="flex-wrap:nowrap;">'+
+        '<input type="text" id="manualCodeInput_'+r.mgmt+'" placeholder="코드 입력" '+
+          'onkeydown="if(event.key===\'Enter\') applyManualCode(\''+r.mgmt+'\')">'+
+        '<button class="ghost" onclick="applyManualCode(\''+r.mgmt+'\')">입력</button>'+
+      '</div></td>'+
       '</tr>';
   }
   tbody.innerHTML = html;
+}
+
+function applyManualCode(mgmt){
+  const input = document.getElementById('manualCodeInput_'+mgmt);
+  setManualCode(mgmt, input.value);
 }
 
 function setManualCode(mgmt, value){
